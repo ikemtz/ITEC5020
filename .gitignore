@@ -4,3 +4,9 @@
 /Week2/dist/
 /Week2/build/
 *.zip
+/Capestra/nbproject/private/
+/Capestra/build/
+/Capestra/dist/
+/CapestraApp/nbproject/private/
+/CapestraApp/dist/
+/CapestraApp/build/
