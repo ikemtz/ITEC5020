@@ -260,15 +260,15 @@ public class CapestraApp extends Application {
     Label customerLbl = new Label("Customer Information");
 
     TableColumn<Customer, Integer> idCol = UiFactory.createTableColumn("Id", 25);
-    customerIdCol.setStyle("-fx-alignment: CENTER;");
+    idCol.setStyle("-fx-alignment: CENTER;");
 
     // Create a TableView
     TableView<Customer> customerTable = new TableView<>();
     customerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     customerTable.setItems(getCustomerList());
-    customerTable.getColumns().addAll(customerIdCol, 
+    customerTable.getColumns().addAll(idCol, 
       UiFactory.createTableColumn("First Name", 80), 
-      UiFactory.createTableColumn("Last Name", 80,
+      UiFactory.createTableColumn("Last Name", 80),
       UiFactory.createTableColumn("Address", 150),
       UiFactory.createTableColumn("City", 90),
       UiFactory.createTableColumn("Zip", 75),
