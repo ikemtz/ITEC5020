@@ -6,7 +6,7 @@ package CapestraApp;
 public class Product {
 
   private int id, quantity, categoryKey = 0;
-  private float price = 0;
+  private float unit_price = 0;
   private String category, name, description;
 
   public Product() {
@@ -19,7 +19,7 @@ public class Product {
     this.category = category;
     this.name = name;
     this.description = description;
-    this.price = price;
+    this.unit_price = price;
   }
 
   public int getId() {
@@ -54,7 +54,7 @@ public class Product {
     this.category = category;
   }
 
-  public String getNameProduct() {
+  public String getName() {
     return name;
   }
 
@@ -71,11 +71,11 @@ public class Product {
   }
 
   public float getPrice() {
-    return price;
+    return unit_price;
   }
 
   public void setPrice(float price) {
-    this.price = price;
+    this.unit_price = price;
   }
 
   @Override

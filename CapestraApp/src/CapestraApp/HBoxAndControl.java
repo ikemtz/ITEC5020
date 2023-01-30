@@ -10,7 +10,8 @@ import javafx.scene.layout.HBox;
  * @author Ikemtz
  *         The purpose of this class is to serve as a tuple storing references
  *         to an input control and an HBox
- *         Also has additional methods to simplify access to underlying UI controls
+ *         Also has additional methods to simplify access to underlying UI
+ *         controls
  */
 public class HBoxAndControl {
     private final HBox hb;
@@ -72,5 +73,9 @@ public class HBoxAndControl {
     // Returns the value of a combo box
     public <TENTITY> TENTITY getSelectedValue() {
         return (TENTITY) getComboBox().getValue();
+    }
+
+    public void clearValue() {
+        getComboBox().valueProperty().setValue(null);
     }
 }
