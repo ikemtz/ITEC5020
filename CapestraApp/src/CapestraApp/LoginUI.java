@@ -39,8 +39,7 @@ public class LoginUI extends BaseUI {
     // Initial code was provide to me in the ITEC5020 Samples
     // Extended by Isaac Martinez
     public void employeeLogin(String username, String password, Label statusLBL) {
-        CapestraDB myDB = new CapestraDB();
-        employee = myDB.validateEmployeeCredentials(username, password, statusLBL);
+        employee = getMyDB().validateEmployeeCredentials(username, password, statusLBL);
 
     } // end employeeLogin()
 }

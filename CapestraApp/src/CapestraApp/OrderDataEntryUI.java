@@ -4,12 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 
-public class OrderDataEntryUI extends BaseUI {
+public class OrderDataEntryUI extends BaseDataEntryUI {
 
     private TableView<OrderDetail> tableView;
     private ObservableList<OrderDetail> orderDetails;
@@ -17,17 +16,14 @@ public class OrderDataEntryUI extends BaseUI {
     private Button addOrderDetailBTN, removeOrderDetailBTN, placeOrderBTN, clearBTN;
     private HBoxAndControl customerHBC, productHBC, quantityHBC;
     private int quantity = 1;
-    // Create Order Scene Setup
-    // Initial code was provide to me in the ITEC5020 Samples
-    // Refactored by Isaac Martinez
 
+    // Create Order Scene Setup
     @Override
     public Scene createScene(MenuBar menuBar) {
-        CapestraDB myDB = new CapestraDB();
         customerHBC = UiFactory.createHBoxAndControl(ControlTypes.ComboBox, "Customer", 150,
-                myDB.getCustomerList(false));
+                getMyDB().getCustomerList(false));
         productHBC = UiFactory.createHBoxAndControl(ControlTypes.ComboBox, "Product", 150,
-                myDB.getProductList());
+                getMyDB().getProductList());
         quantityHBC = UiFactory.createHBoxAndControl(ControlTypes.TextField, "Quantity", 50);
 
         productHBC.getComboBox().valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -52,31 +48,24 @@ public class OrderDataEntryUI extends BaseUI {
         clearBTN = new Button("Clear");
 
         updateCommandButtonStatus();
-        Label statusLBL = new Label("");
 
         addOrderDetailBTN.setOnAction(e -> {
-            OrderDetail newOrderDetail = new OrderDetail(selectedProduct, quantity);
-            orderDetails.add(newOrderDetail);
-            updateCommandButtonStatus();
+            addNewOrderDetailToTableView();
         });
+
         removeOrderDetailBTN.setOnAction(e -> {
             OrderDetail detailSelectedItem = tableView.getSelectionModel().getSelectedItem();
             orderDetails.remove(detailSelectedItem);
             updateCommandButtonStatus();
         });
+
         placeOrderBTN.setOnAction(e -> {
-            Customer selectedCustomer = customerHBC.getSelectedValue();
-            Order order = new Order(CapestraDB.employee, selectedCustomer);
-            order.setOrderDetails(orderDetails.toArray(new OrderDetail[0]));
-            
-            myDB.addOrder(order,statusLBL);
-            clearData();
+            this.addNewOrderToDb();
         });
 
         clearBTN.setOnAction(e -> {
             this.clearData();
         });
-
 
         VBox vbox = new VBox(15, createTitleHBox("Place Order"),
                 customerHBC.getHBox(),
@@ -106,10 +95,12 @@ public class OrderDataEntryUI extends BaseUI {
     // Will disable "place order" and "remove order detail" buttons
     // based on whether or not there are order details
     public void updateCommandButtonStatus() {
-        removeOrderDetailBTN.disableProperty().setValue(orderDetails.isEmpty());
-        placeOrderBTN.disableProperty().setValue(orderDetails.isEmpty());
+        boolean isOrderDetailsEmpty = orderDetails.isEmpty();
+        removeOrderDetailBTN.disableProperty().setValue(isOrderDetailsEmpty);
+        placeOrderBTN.disableProperty().setValue(isOrderDetailsEmpty);
     }
 
+    //Initializes the OrderDetail Table View
     public void initOrderDetailTV() {
         orderDetails = FXCollections.observableArrayList();
         tableView = new TableView<>(orderDetails);
@@ -118,5 +109,21 @@ public class OrderDataEntryUI extends BaseUI {
                 UiFactory.createTableColumn("Quantity", 80),
                 UiFactory.createTableColumn("Unit Price", 50),
                 UiFactory.createTableColumn("Total", 50));
+    }
+
+    // Adds new order detail record to table view
+    public void addNewOrderDetailToTableView() {
+        OrderDetail newOrderDetail = new OrderDetail(selectedProduct, quantity);
+        orderDetails.add(newOrderDetail);
+        updateCommandButtonStatus();
+    }
+
+    // Adds new order to database
+    public void addNewOrderToDb() {
+        Customer selectedCustomer = customerHBC.getSelectedValue();
+        Order order = new Order(CapestraDB.employee, selectedCustomer);
+        order.setOrderDetails(orderDetails.toArray(new OrderDetail[0]));
+        getMyDB().addOrder(order, statusLBL);
+        clearData();
     }
 }

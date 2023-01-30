@@ -8,7 +8,6 @@ public class EmployeeReportUI extends BaseReportUI<Employee> {
     // retrieves a list of employees from the database to be loaded into the tableView  
     @Override
     public ObservableList<Employee> getData() {
-        CapestraDB myDB = new CapestraDB();
         return myDB.getEmployeeList(true);
     }
 

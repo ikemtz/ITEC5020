@@ -9,8 +9,7 @@ public class CustomerReportUI extends BaseReportUI<Customer> {
     // retrieves a list of customers from the database to be loaded into the tableView  
     @Override
     public ObservableList<Customer> getData() {
-        CapestraDB myDB = new CapestraDB();
-        return myDB.getCustomerList(true);
+        return getMyDB().getCustomerList(true);
     }
 
     // Returns the title of the scene

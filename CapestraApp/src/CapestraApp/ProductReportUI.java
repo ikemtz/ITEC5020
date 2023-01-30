@@ -11,8 +11,7 @@ public class ProductReportUI extends BaseReportUI<Product> {
     // Simplified by Isaac Martinez
     @Override
     public ObservableList<Product> getData() {
-        CapestraDB myDB = new CapestraDB();
-        return myDB.getProductList();
+        return getMyDB().getProductList();
     }
 
     @Override

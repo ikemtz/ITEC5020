@@ -55,8 +55,7 @@ public class CapestraDB {
         initializeDB();
         PreparedStatement pstmt = null;
         try {
-            String query = "SELECT id, first_name, last_name, email "
-                    + "FROM employee WHERE username=? and password=?";
+            String query = "SELECT id, first_name, last_name, email FROM employee WHERE username=? and password=?";
             pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -64,7 +63,7 @@ public class CapestraDB {
             ResultSet rset = pstmt.executeQuery();
             if (rset.next()) {
                 employee = readEmployee(rset);
-                statusLBL.setText("Welcome back " + employee.getFirstName() + " " + employee.getLastName());
+                statusLBL.setText("Welcome back " + employee.toString() + ", employee id: "+ employee.getId());
             } else {
                 statusLBL.setText("Employee not found");
                 employee = null;
@@ -276,13 +275,11 @@ public class CapestraDB {
             // Execute the statement
             pstmt.executeUpdate();
             connection.commit();
-            statusLBL.setText("Customer '" + customer.getFirstName() + " "
-                    + customer.getLastName() + "' has been added");
+            statusLBL.setText("Customer '" + customer.toString() + "' has been added");
             added = true;
         } catch (SQLException ex) {
             if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                statusLBL.setText("Customer '" + customer.getFirstName()
-                        + " " + customer.getLastName() + " is aleady in the databse");
+                statusLBL.setText("Customer '" + customer.toString() + "' is aleady in the databse");
             } else {
                 ex.printStackTrace();
             }

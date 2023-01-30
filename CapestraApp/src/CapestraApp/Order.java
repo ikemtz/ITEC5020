@@ -11,8 +11,6 @@ public class Order {
             customerName, customerEmail,
             employeeName, employeeEmail;
     private float grandTotal;
-    private Employee employee;
-    private Customer customer;
 
     private OrderDetail[] orderDetails;
 
@@ -22,10 +20,8 @@ public class Order {
 
     public Order(Employee employee, Customer customer) {
         this.customerId = customer.getId();
-        this.customerName = customer.getFirstName() + " " + customer.getLastName();
+        this.customerName = customer.toString();
         this.employeeId = employee.getId();
-        this.customer = customer;
-        this.employee = employee;
     }
 
     public int getId() {
