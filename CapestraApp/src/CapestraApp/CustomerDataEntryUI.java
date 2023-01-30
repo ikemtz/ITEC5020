@@ -76,7 +76,7 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
                 phoneHBC.getText(),
                 emailHBC.getText());
         if (customerIsValid(customer)) {
-            boolean customerAdded = getMyDB.addCustomer(customer, statusLBL);
+            boolean customerAdded = getMyDB().addCustomer(customer, statusLBL);
             if (customerAdded) {
                 clearData();
             }

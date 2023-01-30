@@ -3,6 +3,8 @@ package CapestraApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
@@ -30,6 +32,8 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
             selectedProduct = (Product) newValue;
         });
         quantityHBC.setText(Integer.toString(quantity));
+
+        //This listener was setup only to allow numeric values in the quantity textField
         quantityHBC.getTextField().textProperty().addListener((observable, oldValue, newValue) -> {
             // The following few lines of code will restrict the quantity textbox to only
             // accept numbers
@@ -54,9 +58,7 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
         });
 
         removeOrderDetailBTN.setOnAction(e -> {
-            OrderDetail detailSelectedItem = tableView.getSelectionModel().getSelectedItem();
-            orderDetails.remove(detailSelectedItem);
-            updateCommandButtonStatus();
+            removeOrderDetailRecordFromTableView();
         });
 
         placeOrderBTN.setOnAction(e -> {
@@ -64,7 +66,7 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
         });
 
         clearBTN.setOnAction(e -> {
-            this.clearData();
+            this.clearData(true);
         });
 
         VBox vbox = new VBox(15, createTitleHBox("Place Order"),
@@ -83,12 +85,17 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
         return new Scene(vboxOL, 600, 500);
     }
 
-    public void clearData() {
+    // Clears all data from the form
+    // completeWipe should be true on clear button click and after successful place order
+    public void clearData(boolean completeWipe) {
+
         this.quantity = 1;
-        this.customerHBC.clearValue();
-        this.productHBC.clearValue();
         this.quantityHBC.setText("1");
-        this.orderDetails.clear();
+        this.productHBC.clearValue();
+        if (completeWipe) {
+            this.customerHBC.clearValue();
+            this.orderDetails.clear();
+        }
         updateCommandButtonStatus();
     }
 
@@ -112,18 +119,45 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
     }
 
     // Adds new order detail record to table view
+    // Also does some basic validation on OrderDetail
     public void addNewOrderDetailToTableView() {
-        OrderDetail newOrderDetail = new OrderDetail(selectedProduct, quantity);
-        orderDetails.add(newOrderDetail);
+        Alert alert = new Alert(AlertType.ERROR);
+        if (selectedProduct == null) {
+            alert.setTitle("Product is required.");
+            alert.showAndWait();
+        } else if (quantity < 1) {
+            alert.setTitle("Quantity should be at least 1.");
+            alert.showAndWait();
+        } else if (quantity > selectedProduct.getQuantity()) {
+            alert.setTitle("Sorry we don't have enough of " + selectedProduct.getName());
+            alert.showAndWait();
+        } else {
+            OrderDetail newOrderDetail = new OrderDetail(selectedProduct, quantity);
+            orderDetails.add(newOrderDetail);
+            clearData(false);
+            updateCommandButtonStatus();
+        }
+    }
+
+    // Removes an Order Detail Record from the Table View
+    public void removeOrderDetailRecordFromTableView() {
+        OrderDetail detailSelectedItem = tableView.getSelectionModel().getSelectedItem();
+        orderDetails.remove(detailSelectedItem);
         updateCommandButtonStatus();
     }
 
     // Adds new order to database
     public void addNewOrderToDb() {
         Customer selectedCustomer = customerHBC.getSelectedValue();
-        Order order = new Order(CapestraDB.employee, selectedCustomer);
-        order.setOrderDetails(orderDetails.toArray(new OrderDetail[0]));
-        getMyDB().addOrder(order, statusLBL);
-        clearData();
+        if (selectedCustomer == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Customer is required.");
+            alert.showAndWait();
+        } else {
+            Order order = new Order(CapestraDB.employee, selectedCustomer);
+            order.setOrderDetails(orderDetails.toArray(new OrderDetail[0]));
+            getMyDB().addOrder(order, statusLBL);
+            clearData(true);
+        }
     }
 }

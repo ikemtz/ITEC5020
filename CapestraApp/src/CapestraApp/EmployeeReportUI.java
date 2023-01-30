@@ -8,7 +8,7 @@ public class EmployeeReportUI extends BaseReportUI<Employee> {
     // retrieves a list of employees from the database to be loaded into the tableView  
     @Override
     public ObservableList<Employee> getData() {
-        return myDB.getEmployeeList(true);
+        return getMyDB().getEmployeeList(true);
     }
 
     // Returns the title of the scene

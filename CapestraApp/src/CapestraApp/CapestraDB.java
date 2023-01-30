@@ -14,7 +14,9 @@ import javafx.scene.control.Label;
 
 public class CapestraDB {
 
+    // This will allow the rest of the application to ensure that an employee has logged in.
     public static Employee employee;
+    
     private final int ER_DUP_ENTRY = 1062; // MySQL error code for duplicate entry
     private Connection connection;
     private Statement stmt;
@@ -323,12 +325,21 @@ public class CapestraDB {
             
             for (OrderDetail orderDetail : order.getOrderDetails()) {
 
+                //Insert new records into Order Detail
                 sql = "INSERT INTO `order_detail`(`order_id`,`product_id`,`quantity`) VALUES (?,?,?);";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setInt(1, newOrderId);
                 pstmt.setInt(2, orderDetail.getProductId());
                 pstmt.setInt(3, orderDetail.getQuantity());
                 pstmt.executeUpdate();
+                
+                //Update existing product quantities
+                sql = "UPDATE product SET quantity = quantity - ? WHERE id=?;";  
+                pstmt = connection.prepareStatement(sql); 
+                pstmt.setInt(1, orderDetail.getQuantity());
+                pstmt.setInt(2, orderDetail.getProductId());
+                pstmt.executeUpdate();
+                
             }
 
             connection.commit();

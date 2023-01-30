@@ -12,12 +12,10 @@ import javafx.scene.layout.VBox;
 //This Scene doesn't follow the standard as it has two table views Order and OrderDetails (master and child)
 public class OrderReportUI extends BaseReportUI<Order> {
 
-    private final CapestraDB myDB = new CapestraDB();
-
     // Create a list of orders to be loaded into the table 
     @Override
     public ObservableList<Order> getData() {
-        return myDB.getOrderList();
+        return getMyDB().getOrderList();
     }
 
     @Override
@@ -82,7 +80,7 @@ public class OrderReportUI extends BaseReportUI<Order> {
         return (ListChangeListener.Change<? extends Order> changed) -> {
             if (changed.next()) {
                 int orderId = changed.getAddedSubList().get(0).getId();
-                orderDetailView.setItems(myDB.getOrderDetailList(orderId));
+                orderDetailView.setItems(getMyDB().getOrderDetailList(orderId));
             }
         };
     }
