@@ -123,13 +123,13 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
     public void addNewOrderDetailToTableView() {
         Alert alert = new Alert(AlertType.ERROR);
         if (selectedProduct == null) {
-            alert.setTitle("Product is required.");
+            alert.setContentText("Product is required.");
             alert.showAndWait();
         } else if (quantity < 1) {
-            alert.setTitle("Quantity should be at least 1.");
+            alert.setContentText("Quantity should be at least 1.");
             alert.showAndWait();
         } else if (quantity > selectedProduct.getQuantity()) {
-            alert.setTitle("Sorry we don't have enough of " + selectedProduct.getName());
+            alert.setContentText("Sorry we don't have enough of " + selectedProduct.getName());
             alert.showAndWait();
         } else {
             OrderDetail newOrderDetail = new OrderDetail(selectedProduct, quantity);
@@ -151,7 +151,7 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
         Customer selectedCustomer = customerHBC.getSelectedValue();
         if (selectedCustomer == null) {
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Customer is required.");
+            alert.setContentText("Customer is required.");
             alert.showAndWait();
         } else {
             Order order = new Order(CapestraDB.employee, selectedCustomer);
