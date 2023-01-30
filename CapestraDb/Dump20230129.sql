@@ -114,15 +114,17 @@ DROP TABLE IF EXISTS `order`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `order_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `order_status` varchar(15) DEFAULT 'Pending',
+  `customer_id` int(11) NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `order_status_key` int(11) NOT NULL DEFAULT '1',
   `employee_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_customer_idx` (`customer_id`),
   KEY `fk_employee_idx` (`employee_id`),
+  KEY `fk_order_status_idx` (`order_status_key`),
   CONSTRAINT `fk_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_status` FOREIGN KEY (`order_status_key`) REFERENCES `order_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -132,7 +134,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1,'2018-02-15 00:00:00','Delivered',1),(2,2,'2018-03-19 00:00:00','Pending',1),(5,3,'2023-01-30 02:16:31','Pending',1),(6,4,'2023-01-30 02:17:50','Pending',1),(7,4,'2023-01-30 02:20:55','Pending',1);
+INSERT INTO `order` VALUES (1,1,'2018-02-15 00:00:00',1,1),(2,2,'2018-03-19 00:00:00',1,1),(5,3,'2023-01-30 02:16:31',1,1),(6,4,'2023-01-30 02:17:50',1,1),(7,4,'2023-01-30 02:20:55',1,1);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,6 +166,31 @@ LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
 INSERT INTO `order_detail` VALUES (1,1,2,3),(2,2,4,2),(4,5,1,1),(5,5,2,3),(6,6,1,1),(7,6,4,5),(8,7,4,5),(9,7,2,3);
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_status`
+--
+
+DROP TABLE IF EXISTS `order_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_status_name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_status`
+--
+
+LOCK TABLES `order_status` WRITE;
+/*!40000 ALTER TABLE `order_status` DISABLE KEYS */;
+INSERT INTO `order_status` VALUES (2,'Delivered'),(1,'Pending');
+/*!40000 ALTER TABLE `order_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -270,7 +297,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_order_report` AS select `order`.`id` AS `id`,`order`.`customer_id` AS `customer_id`,`order`.`employee_id` AS `employee_id`,`order`.`order_status` AS `order_status`,concat(`customer`.`first_name`,' ',`customer`.`last_name`) AS `customer_name`,`customer`.`email` AS `customer_email`,concat(`employee`.`first_name`,' ',`employee`.`last_name`) AS `employee_name`,`employee`.`email` AS `employee_email`,(select count(`order_detail`.`id`) from `order_detail` where (`order_detail`.`order_id` = `order`.`id`)) AS `detail_count`,(select sum((`product`.`unit_price` * `order_detail`.`quantity`)) from (`order_detail` join `product` on((`order_detail`.`product_id` = `product`.`id`))) where (`order_detail`.`order_id` = `order`.`id`)) AS `grand_total` from ((`order` join `customer` on((`customer`.`id` = `order`.`customer_id`))) join `employee` on((`order`.`employee_id` = `employee`.`id`))) */;
+/*!50001 VIEW `vw_order_report` AS select `order`.`id` AS `id`,`order`.`customer_id` AS `customer_id`,`order`.`employee_id` AS `employee_id`,`order_status`.`name` AS `order_status`,concat(`customer`.`first_name`,' ',`customer`.`last_name`) AS `customer_name`,`customer`.`email` AS `customer_email`,concat(`employee`.`first_name`,' ',`employee`.`last_name`) AS `employee_name`,`employee`.`email` AS `employee_email`,(select count(`order_detail`.`id`) from `order_detail` where (`order_detail`.`order_id` = `order`.`id`)) AS `detail_count`,(select sum((`product`.`unit_price` * `order_detail`.`quantity`)) from (`order_detail` join `product` on((`order_detail`.`product_id` = `product`.`id`))) where (`order_detail`.`order_id` = `order`.`id`)) AS `grand_total` from (((`order` join `customer` on((`customer`.`id` = `order`.`customer_id`))) join `employee` on((`order`.`employee_id` = `employee`.`id`))) join `order_status` on((`order`.`order_status_key` = `order_status`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -284,4 +311,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-29 21:23:18
+-- Dump completed on 2023-01-30  1:13:09
