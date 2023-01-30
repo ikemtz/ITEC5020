@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(45) DEFAULT NULL,
+  `category_name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `category_name_UNIQUE` (`category_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
@@ -51,14 +51,14 @@ DROP TABLE IF EXISTS `customer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `address` varchar(250) DEFAULT NULL,
-  `city` varchar(150) DEFAULT NULL,
-  `state` varchar(75) DEFAULT NULL,
-  `zip` varchar(5) DEFAULT NULL,
-  `phone` varchar(15) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `city` varchar(150) NOT NULL,
+  `state` varchar(75) NOT NULL,
+  `zip` varchar(5) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `email` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uix_customer_name` (`first_name`,`last_name`),
   UNIQUE KEY `uix_customer_email` (`email`)
@@ -84,11 +84,11 @@ DROP TABLE IF EXISTS `employee`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uix_employee_username` (`username`),
   UNIQUE KEY `uix_employee_email` (`email`)
@@ -147,9 +147,9 @@ DROP TABLE IF EXISTS `order_detail`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_order_idx` (`order_id`),
   KEY `fk_product_idx` (`product_id`),
@@ -177,7 +177,7 @@ DROP TABLE IF EXISTS `order_status`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_status_name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
@@ -202,11 +202,11 @@ DROP TABLE IF EXISTS `product`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(150) DEFAULT NULL,
-  `product_description` varchar(500) DEFAULT NULL,
-  `unit_price` decimal(18,2) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `category_key` int(11) DEFAULT NULL,
+  `product_name` varchar(150) NOT NULL,
+  `product_description` varchar(500) NOT NULL,
+  `unit_price` decimal(18,2) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `category_key` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `product_name_UNIQUE` (`product_name`),
   KEY `fk_category_idx` (`category_key`),
@@ -263,10 +263,6 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping routines for database 'orderentrysystem'
---
-
---
 -- Final view structure for view `vw_order_detail_report`
 --
 
@@ -311,4 +307,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-30  1:13:09
+-- Dump completed on 2023-01-30  1:20:52
