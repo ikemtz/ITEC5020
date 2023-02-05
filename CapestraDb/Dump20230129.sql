@@ -91,8 +91,10 @@ CREATE TABLE `employee` (
   `email` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uix_employee_username` (`username`),
-  UNIQUE KEY `uix_employee_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `uix_employee_email` (`email`),
+  UNIQUE KEY `uix_employee_name` (`first_name`,`last_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +104,7 @@ CREATE TABLE `employee` (
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 INSERT INTO `employee` VALUES (1,'admin','admin','root','root','admin@capestra.local');
+INSERT INTO `employee` VALUES (2,'user','user','username','password','user@capestra.local');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
