@@ -25,7 +25,7 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
     Button addCustBTN = new Button("Add Customer");
 
     addCustBTN.setOnAction(e -> {
-      addCustomerToDb();
+      addRecordToDb();
     });
 
     Button clearBTN = new Button("Clear");
@@ -64,8 +64,9 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
     emailHBC.setText("");
   }
 
+  @Override
   // Add a (new) customer to the DB
-  public void addCustomerToDb() {
+  public void addRecordToDb() {
     Customer customer = new Customer(0,
         firstnameHBC.getText(),
         lastnameHBC.getText(),
@@ -75,9 +76,9 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
         zipHBC.getText(),
         phoneHBC.getText(),
         emailHBC.getText());
-    if (customerIsValid(customer)) {
+    if (isRecordValid(customer)) {
       boolean customerAdded = getMyDB().addCustomer(customer, statusLBL);
-      this.updateStatusLabel(!customerAdded);
+      this.updateStatusLblColor(!customerAdded);
       if (customerAdded) {
         clearData();
       }
@@ -85,7 +86,7 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
   } // end addCustomer()
 
   // Ensures that all customer properties are valid
-  private boolean customerIsValid(Customer customer) {
+  public boolean isRecordValid(Customer customer) {
     StringBuilder errorMessages = new StringBuilder();
     if (customer.getFirstName().isEmpty()) {
       errorMessages.append("First Name is required; ");
@@ -111,11 +112,6 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
     if (customer.getEmail().isEmpty()) {
       errorMessages.append("Email is required; ");
     }
-    boolean hasErrors = errorMessages.length() > 0;
-    if (hasErrors) {
-      this.statusLBL.setText("ERROR: " + errorMessages.toString().trim());
-    }
-    this.updateStatusLabel(hasErrors);
-    return !hasErrors;
+    return this.displayErrorMessagesIfAny(errorMessages);
   }
 }

@@ -17,7 +17,20 @@ public abstract class BaseDataEntryUI extends BaseUI {
     statusLBL.setWrapText(true);
   }
 
-  public void updateStatusLabel(boolean hasErrors) {
+  public abstract void addRecordToDb();
+
+  public boolean displayErrorMessagesIfAny(StringBuilder errorMessages) {
+    boolean hasErrors = errorMessages.length() > 0;
+    if (hasErrors) {
+      this.statusLBL.setText("ERROR: " + errorMessages.toString().trim());
+    } else {
+      this.statusLBL.setText("");
+    }
+    this.updateStatusLblColor(hasErrors);
+    return !hasErrors;
+  }
+
+  public void updateStatusLblColor(boolean hasErrors) {
     if (hasErrors) {
       statusLBL.setTextFill(Color.RED);
     } else {
