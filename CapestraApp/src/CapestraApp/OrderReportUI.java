@@ -9,6 +9,13 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 
+/*
+ * Capestra Order Entry System
+ *
+ * OrderReportUI.java - UI Scene for Order Report screen
+ * Modified by: Isaac Martinez
+ *
+ */
 //This Scene doesn't follow the standard as it has two table views Order and OrderDetails (master and child)
 public class OrderReportUI extends BaseReportUI<Order> {
 
@@ -73,7 +80,7 @@ public class OrderReportUI extends BaseReportUI<Order> {
                 createTitleHBox(getTitle()), orderView,
                 createTitleHBox("Order Detail Information"), orderDetailView
         );
-        return new Scene(vbox, SceneWidth, SceneHeight);
+        return applyStyleSheet(new Scene(vbox, SceneWidth, SceneHeight));
     }
 
     public ListChangeListener<Order> handleOrderSelectionChange(TableView<OrderDetail> orderDetailView) {

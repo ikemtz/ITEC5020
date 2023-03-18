@@ -1,0 +1,11 @@
+/*
+Code copied from Week 10 Assignment ITEC 5020
+Modified by Isaac Martinez
+*/
+
+.button {
+-fx-font: 16px "San Serif";
+-fx-padding: 5 25 5 25;
+-fx-background-color: #cacaca;
+-fx-background-radius: 50px;
+}

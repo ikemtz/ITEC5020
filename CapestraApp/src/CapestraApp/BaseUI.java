@@ -33,4 +33,10 @@ public abstract class BaseUI {
         labelHB.alignmentProperty().setValue(Pos.CENTER);
         return labelHB;
     }
+    
+    public Scene applyStyleSheet(Scene scene)
+    {
+        scene.getStylesheets().add(CapestraApp.class.getResource("Capestra.css").toExternalForm());
+        return scene;
+    }
 }

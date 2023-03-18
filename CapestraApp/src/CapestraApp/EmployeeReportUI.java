@@ -2,7 +2,13 @@ package CapestraApp;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
- 
+ /*
+ * Capestra Order Entry System
+ *
+ * EmployeeReportUI.java - UI Scene for Employee Report
+ * Modified by: Isaac Martinez
+ *
+ */
 public class EmployeeReportUI extends BaseReportUI<Employee> {
 
     // retrieves a list of employees from the database to be loaded into the tableView  
@@ -22,8 +28,8 @@ public class EmployeeReportUI extends BaseReportUI<Employee> {
     void setupTableView(TableView<Employee> tableView) {
         tableView.getColumns().addAll(
                 UiFactory.createTableColumn("Id", 100),
-                UiFactory.createTableColumn("First Name", 200),
-                UiFactory.createTableColumn("Last Name", 200),
+                UiFactory.createTableColumn("First Name", 175),
+                UiFactory.createTableColumn("Last Name", 175),
                 UiFactory.createTableColumn("Email", 300));
     }
 }

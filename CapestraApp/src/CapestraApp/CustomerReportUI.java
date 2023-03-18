@@ -3,7 +3,13 @@ package CapestraApp;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
+/*
+ * Capestra Order Entry System
+ *
+ * CustomerReportUI.java - UI Scene for Customer Report
+ * Modified by: Isaac Martinez
+ *
+ */
 public class CustomerReportUI extends BaseReportUI<Customer> {
 
     // retrieves a list of customers from the database to be loaded into the tableView  
@@ -30,7 +36,7 @@ public class CustomerReportUI extends BaseReportUI<Customer> {
                 UiFactory.createTableColumn("City", 90),
                 UiFactory.createTableColumn("Zip", 75),
                 UiFactory.createTableColumn("Phone", 75),
-                UiFactory.createTableColumn("Email", 120));
+                UiFactory.createTableColumn("Email", 150));
 
     }
 }

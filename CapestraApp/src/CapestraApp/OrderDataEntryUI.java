@@ -3,17 +3,22 @@ package CapestraApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
-
+/*
+ * Capestra Order Entry System
+ *
+ * OrderDataEntryUI.java - UI Scene for Order Data Entry screen
+ * Modified by: Isaac Martinez
+ *
+ */
 public class OrderDataEntryUI extends BaseDataEntryUI {
 
   private TableView<OrderDetail> tableView;
   private ObservableList<OrderDetail> orderDetails;
+  private Customer selectedCustomer;
   private Product selectedProduct;
   private Button addOrderDetailBTN, removeOrderDetailBTN, placeOrderBTN, clearBTN;
   private HBoxAndControl customerHBC, productHBC, quantityHBC;
@@ -27,9 +32,11 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
     productHBC = UiFactory.createHBoxAndControl(ControlTypes.ComboBox, "Product", 150,
         getMyDB().getProductList());
     quantityHBC = UiFactory.createHBoxAndControl(ControlTypes.TextField, "Quantity", 50);
-
     productHBC.getComboBox().valueProperty().addListener((observable, oldValue, newValue) -> {
       selectedProduct = (Product) newValue;
+    });
+    customerHBC.getComboBox().valueProperty().addListener((observable, oldValue, newValue) -> {
+      selectedCustomer = (Customer) newValue;
     });
     quantityHBC.setText(Integer.toString(quantity));
 
@@ -83,7 +90,7 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
         statusLBL);
     vbox.setPadding(UiFactory.DEFAULT_INSETS);
     VBox vboxOL = new VBox(menuBar, vbox);
-    return new Scene(vboxOL, 600, 500);
+    return applyStyleSheet(new Scene(vboxOL, 750, 500));
   }
 
   // Clears all data from the form
@@ -165,10 +172,14 @@ public class OrderDataEntryUI extends BaseDataEntryUI {
 
   public boolean isOrderDetailRecordValid() {
     StringBuilder errorMessages = new StringBuilder();
+    if (selectedCustomer == null) {
+      errorMessages.append("Customer is required; ");
+    } 
+    if (quantity < 1) {
+      errorMessages.append("Quantity should be at least 1; ");
+    } 
     if (selectedProduct == null) {
       errorMessages.append("Product is required; ");
-    } else if (quantity < 1) {
-      errorMessages.append("Quantity should be at least 1; ");
     } else if (quantity > selectedProduct.getQuantity()) {
       errorMessages
           .append("Sorry we don't have enough of ")

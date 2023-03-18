@@ -30,7 +30,7 @@ public class LoginUI extends BaseUI {
                 statusLBL);
         vbox.setPadding(UiFactory.DEFAULT_INSETS);
         VBox vboxOL = new VBox(25, menuBar, vbox);
-        return new Scene(vboxOL, 550, 400);
+        return applyStyleSheet(new Scene(vboxOL, 550, 400));
     }
 
     // Attempt to log in as an employee

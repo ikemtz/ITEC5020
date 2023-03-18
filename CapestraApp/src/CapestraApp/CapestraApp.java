@@ -24,8 +24,7 @@ public class CapestraApp extends Application {
   private LoginUI loginUI;
 
   // Application scenes
-  private Scene loginSCN, createCustomerSCN, createOrderSCN, employeeTableSCN, customerTableSCN, orderTableSCN,
-      productTableSCN;
+  private Scene loginSCN;
 
   @Override
   public void start(Stage primaryStage) {
@@ -35,25 +34,7 @@ public class CapestraApp extends Application {
     // Login Scene Setup
     loginUI = new LoginUI();
     loginSCN = loginUI.createScene(createMenuBar(primaryStage));
-
-    // Add Customer Scene Setup
-    createCustomerSCN = new CustomerDataEntryUI().createScene(createMenuBar(primaryStage));
-
-    // Place Order Scene Setup
-    createOrderSCN = new OrderDataEntryUI().createScene(createMenuBar(primaryStage));
-
-    // Employee Information Report Scene Setup
-    employeeTableSCN = new EmployeeReportUI().createScene(createMenuBar(primaryStage));
-
-    // Customer Information Scene Setup
-    customerTableSCN = new CustomerReportUI().createScene(createMenuBar(primaryStage));
-
-    // Order Information Report Scene Setup
-    orderTableSCN = new OrderReportUI().createScene(createMenuBar(primaryStage));
-
-    // Product Information Report Scene Setup
-    productTableSCN = new ProductReportUI().createScene(createMenuBar(primaryStage));
-
+    
     // Go to Login Scene to begin the app
     primaryStage.setScene(loginSCN);
     primaryStage.show();
@@ -81,21 +62,21 @@ public class CapestraApp extends Application {
     menu2.getItems().addAll(menu21, menu22, menu23, menu24);
 
     // Associate menu items with corresponding scenes
-    menu11.setOnAction(e -> navigateToScene(primaryStage, loginSCN));
-    menu12.setOnAction(e -> navigateToScene(primaryStage, createCustomerSCN));
-    menu13.setOnAction(e -> navigateToScene(primaryStage, createOrderSCN));
-    menu21.setOnAction(e -> navigateToScene(primaryStage, employeeTableSCN));
-    menu22.setOnAction(e -> navigateToScene(primaryStage, customerTableSCN));
-    menu23.setOnAction(e -> navigateToScene(primaryStage, orderTableSCN));
-    menu24.setOnAction(e -> navigateToScene(primaryStage, productTableSCN));
+    menu11.setOnAction(e -> navigateToScene(primaryStage, loginUI));
+    menu12.setOnAction(e -> navigateToScene(primaryStage, new CustomerDataEntryUI()));
+    menu13.setOnAction(e -> navigateToScene(primaryStage, new OrderDataEntryUI()));
+    menu21.setOnAction(e -> navigateToScene(primaryStage, new EmployeeReportUI()));
+    menu22.setOnAction(e -> navigateToScene(primaryStage, new CustomerReportUI()));
+    menu23.setOnAction(e -> navigateToScene(primaryStage, new OrderReportUI()));
+    menu24.setOnAction(e -> navigateToScene(primaryStage, new ProductReportUI()));
 
     return menuBar;
   } // end createMenuBar()
 
   // Method to stop navigation to other scenes if user is not logged in.
-  public void navigateToScene(Stage primaryStage, Scene scene) {
+  public void navigateToScene(Stage primaryStage, BaseUI baseUI) {
     if (this.loginUI.employee != null) {
-      primaryStage.setScene(scene);
+      primaryStage.setScene(baseUI.createScene(createMenuBar(primaryStage)));
     } else {
       Alert alert = new Alert(AlertType.ERROR, "Please Login.", ButtonType.OK);
       alert.showAndWait();

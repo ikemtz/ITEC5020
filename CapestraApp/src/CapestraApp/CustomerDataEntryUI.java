@@ -4,7 +4,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.VBox;
-
+/*
+ * Capestra Order Entry System
+ *
+ * CustomerDataEntryUI.java - UI Scene for Customer Data Entry
+ * Modified by: Isaac Martinez
+ *
+ */
 public class CustomerDataEntryUI extends BaseDataEntryUI {
 
   private HBoxAndControl firstnameHBC, lastnameHBC, addressHBC, cityHBC, stateHBC, zipHBC, phoneHBC, emailHBC;
@@ -49,7 +55,7 @@ public class CustomerDataEntryUI extends BaseDataEntryUI {
 
     VBox vboxOL = new VBox(menuBar, vbox);
 
-    return new Scene(vboxOL, 600, 500);
+    return applyStyleSheet(new Scene(vboxOL, 600, 550));
   }
 
   // This function clears the data

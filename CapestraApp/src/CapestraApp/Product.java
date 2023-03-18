@@ -2,6 +2,10 @@
 //
 package CapestraApp;
 
+/**
+ * POJO (plan old java object) class for Product table
+ * @author Ikemtz
+ */
 // Initial code was provide to me in the ITEC5020 Samples
 public class Product {
 

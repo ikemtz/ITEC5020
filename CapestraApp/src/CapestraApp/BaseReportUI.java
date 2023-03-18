@@ -43,6 +43,6 @@ public abstract class BaseReportUI<ENTITY> extends BaseUI {
         // Finishing off the scene
         VBox vbox = new VBox(20);
         vbox.getChildren().addAll(menuBar, createTitleHBox(getTitle()), tableView);
-        return new Scene(vbox, SceneWidth, SceneHeight);
+        return applyStyleSheet(new Scene(vbox, SceneWidth, SceneHeight));
     }
 }

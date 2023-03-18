@@ -1,7 +1,7 @@
 package CapestraApp;
 
 /**
- *
+ * POJO (plan old java object) class for Order Detail table
  * @author Ikemtz
  */
 public class OrderDetail {

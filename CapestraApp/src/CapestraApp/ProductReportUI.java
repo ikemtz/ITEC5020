@@ -2,7 +2,13 @@ package CapestraApp;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
-
+ /*
+ * Capestra Order Entry System
+ *
+ * EmployeeReportUI.java - UI Scene for Product Report
+ * Modified by: Isaac Martinez
+ *
+ */
 // Product Information Scene Setup
 public class ProductReportUI extends BaseReportUI<Product> {
 
